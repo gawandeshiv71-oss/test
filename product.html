@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details — Sweet Crumbs Bakery</title>
+  <meta name="description" content="View product details at Sweet Crumbs Bakery.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ══ NAVBAR ══════════════════════════════════════════════ -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container navbar-inner">
+      <a href="index.html" class="nav-logo"><span>🍰</span> Sweet Crumbs</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="cart.html" class="cart-link">🛒 Cart <span class="cart-count" id="cart-count">0</span></a></li>
+        <li><a href="login.html" id="nav-login-link">Login</a><span class="nav-user" id="nav-user-display" style="display:none;"></span></li>
+        <li><button class="btn btn-outline btn-sm" id="nav-logout-btn" style="display:none;">Logout</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ══ BREADCRUMB ══════════════════════════════════════════ -->
+  <div style="background:var(--cream-dark); padding:0.7rem 0; font-size:0.88rem; color:var(--text-mid);">
+    <div class="container">
+      <a href="index.html" style="color:var(--brown);">Home</a> →
+      <a href="products.html" style="color:var(--brown);">Products</a> →
+      <span id="breadcrumb-name">Loading...</span>
+    </div>
+  </div>
+
+  <!-- ══ PRODUCT DETAIL ══════════════════════════════════════ -->
+  <div class="container">
+
+    <!-- Loading state -->
+    <div id="product-loading" class="loading-state" style="padding:5rem 1rem;">
+      <div class="spinner"></div>
+      <p>Loading product details...</p>
+    </div>
+
+    <!-- Error state -->
+    <div id="product-error" class="error-state hidden" style="padding:5rem 1rem;">
+      <p>⚠️ Product not found or server unavailable.</p>
+      <a href="products.html" class="btn btn-primary mt-2">← Back to Products</a>
+    </div>
+
+    <!--
+      LEARNING NOTE:
+      This section is hidden until the product is loaded.
+      JavaScript reads the ?id=3 from the URL, then sends:
+        GET /api/products/3
+      Flask looks up product 3 in the database and returns JSON.
+      JavaScript then populates all the fields below.
+    -->
+    <div id="product-detail" class="product-detail hidden">
+
+      <!-- Left: Product Image -->
+      <div>
+        <img id="product-image" class="product-detail-image" src="" alt="" onerror="this.style.display='none'">
+        <div id="product-image-placeholder" class="product-card-image-placeholder" style="height:420px; border-radius:var(--radius-md); display:none;">🎂</div>
+      </div>
+
+      <!-- Right: Product Info -->
+      <div class="product-detail-info">
+        <div class="product-category" id="product-category">—</div>
+        <h1 id="product-name">—</h1>
+        <div class="product-detail-price" id="product-price">—</div>
+
+        <div id="product-availability" style="margin-bottom:1rem;"></div>
+
+        <p class="product-detail-desc" id="product-description">—</p>
+
+        <!-- Quantity selector -->
+        <div class="qty-selector" aria-label="Quantity selector">
+          <button class="qty-btn" id="qty-decrease" aria-label="Decrease quantity">−</button>
+          <span class="qty-display" id="qty-display" aria-live="polite">1</span>
+          <button class="qty-btn" id="qty-increase" aria-label="Increase quantity">+</button>
+          <span style="color:var(--text-light); font-size:0.9rem;">qty</span>
+        </div>
+
+        <!-- Add to Cart -->
+        <button class="btn btn-primary" id="add-to-cart-detail-btn" style="font-size:1rem; padding:0.8rem 2rem;">
+          🛒 Add to Cart
+        </button>
+        <a href="cart.html" class="btn btn-outline" style="margin-left:0.8rem;" id="go-to-cart-btn">View Cart</a>
+
+        <div id="add-to-cart-alert" class="alert hidden mt-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ FOOTER ══════════════════════════════════════════════ -->
+  <footer class="footer" role="contentinfo" style="margin-top:3rem;">
+    <div class="container">
+      <div class="footer-bottom"><p>© 2024 Sweet Crumbs Bakery</p></div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+    /**
+     * LEARNING EXAMPLE: How a single product page works.
+     *
+     *  1. Read the product ID from the URL: product.html?id=3
+     *  2. Send GET /api/products/3 to Flask
+     *  3. Flask queries: SELECT * FROM products WHERE id = 3
+     *  4. Flask returns JSON: { "success": true, "product": {...} }
+     *  5. We fill in the HTML elements with the product data
+     */
+
+    let currentProduct = null;
+    let quantity = 1;
+
+    async function loadProductDetail() {
+      // Step 1: Get the product ID from the URL query string
+      const params    = new URLSearchParams(window.location.search);
+      const productId = params.get("id");
+
+      if (!productId) {
+        showError();
+        return;
+      }
+
+      try {
+        // Step 2-4: Fetch product from backend
+        const data = await getProduct(productId);
+        currentProduct = data.product;
+
+        // Step 5: Update the page title and DOM elements
+        document.title = `${currentProduct.name} — Sweet Crumbs Bakery`;
+        document.getElementById("breadcrumb-name").textContent = currentProduct.name;
+
+        document.getElementById("product-category").textContent    = currentProduct.category;
+        document.getElementById("product-name").textContent        = currentProduct.name;
+        document.getElementById("product-price").textContent       = `₹${currentProduct.price.toFixed(0)}`;
+        document.getElementById("product-description").textContent = currentProduct.description;
+
+        // Availability badge
+        const avEl = document.getElementById("product-availability");
+        avEl.innerHTML = currentProduct.available
+          ? `<span class="availability-badge badge-available">✓ In Stock</span>`
+          : `<span class="availability-badge badge-unavailable">✕ Out of Stock</span>`;
+
+        // Image
+        if (currentProduct.image) {
+          const img = document.getElementById("product-image");
+          img.src = currentProduct.image;
+          img.alt = currentProduct.name;
+          img.style.display = "block";
+        } else {
+          document.getElementById("product-image-placeholder").style.display = "flex";
+        }
+
+        // Show the product detail section
+        document.getElementById("product-loading").style.display = "none";
+        document.getElementById("product-detail").classList.remove("hidden");
+
+        // Disable Add to Cart if out of stock
+        if (!currentProduct.available) {
+          document.getElementById("add-to-cart-detail-btn").disabled = true;
+          document.getElementById("add-to-cart-detail-btn").style.opacity = "0.5";
+        }
+
+      } catch (err) {
+        showError();
+      }
+    }
+
+    function showError() {
+      document.getElementById("product-loading").style.display = "none";
+      document.getElementById("product-error").classList.remove("hidden");
+    }
+
+    // ── Quantity buttons ─────────────────────────────────────
+    document.getElementById("qty-decrease").addEventListener("click", () => {
+      if (quantity > 1) {
+        quantity--;
+        document.getElementById("qty-display").textContent = quantity;
+      }
+    });
+
+    document.getElementById("qty-increase").addEventListener("click", () => {
+      quantity++;
+      document.getElementById("qty-display").textContent = quantity;
+    });
+
+    // ── Add to Cart ──────────────────────────────────────────
+    document.getElementById("add-to-cart-detail-btn").addEventListener("click", () => {
+      if (!currentProduct) return;
+
+      // Add the selected quantity to the cart
+      for (let i = 0; i < quantity; i++) {
+        addToCart({
+          id: currentProduct.id,
+          name: currentProduct.name,
+          price: currentProduct.price,
+          image: currentProduct.image,
+        });
+      }
+
+      const alertEl = document.getElementById("add-to-cart-alert");
+      alertEl.textContent = `✓ ${quantity} × ${currentProduct.name} added to cart!`;
+      alertEl.className = "alert alert-success mt-2";
+      setTimeout(() => alertEl.className = "alert hidden", 3000);
+    });
+
+    // ── Mobile nav ───────────────────────────────────────────
+    const navToggle = document.getElementById("nav-toggle");
+    const navLinks  = document.getElementById("nav-links");
+    if (navToggle && navLinks) {
+      navToggle.addEventListener("click", () => navLinks.classList.toggle("open"));
+    }
+
+    // Kick off on page load
+    loadProductDetail();
+    updateCartCount();
+  </script>
+
+</body>
+</html>

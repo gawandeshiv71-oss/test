@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sweet Crumbs Bakery — Freshly Baked Happiness, Every Day</title>
+  <meta name="description" content="Sweet Crumbs Bakery — Delicious cakes, pastries and treats baked fresh for every special moment. Order online for delivery.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ══ NAVBAR ══════════════════════════════════════════════ -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container navbar-inner">
+      <a href="index.html" class="nav-logo">
+        <span>🍰</span> Sweet Crumbs
+      </a>
+
+      <!-- Hamburger for mobile -->
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="products.html?category=Cakes">Cakes</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li>
+          <a href="cart.html" class="cart-link" aria-label="Cart">
+            🛒 Cart
+            <span class="cart-count" id="cart-count" aria-live="polite">0</span>
+          </a>
+        </li>
+        <li>
+          <a href="login.html" id="nav-login-link">Login</a>
+          <span class="nav-user" id="nav-user-display" style="display:none;"></span>
+        </li>
+        <li>
+          <button class="btn btn-outline btn-sm" id="nav-logout-btn" style="display:none;">Logout</button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ════════════════════════════════════════════════ -->
+  <section class="hero" aria-label="Hero section">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">🎉 Freshly Baked Daily</div>
+        <h1>
+          Freshly Baked
+          <span class="highlight">Happiness</span>
+        </h1>
+        <p>
+          Delicious cakes, pastries and treats baked fresh for every
+          special moment. Made with love, delivered to your door.
+        </p>
+        <div class="hero-buttons">
+          <a href="products.html?category=Cakes" class="btn btn-primary" id="hero-explore-btn">
+            🎂 Explore Cakes
+          </a>
+          <a href="products.html" class="btn btn-outline" id="hero-order-btn">
+            Order Now
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FEATURES STRIP ══════════════════════════════════════ -->
+  <section style="background:var(--brown-dark); color:var(--cream); padding:1.2rem 0;">
+    <div class="container">
+      <div style="display:flex; gap:2rem; flex-wrap:wrap; justify-content:center; text-align:center;">
+        <div>🚚 <strong>Free Delivery</strong> on orders above ₹500</div>
+        <div>🌿 <strong>100% Natural</strong> Ingredients</div>
+        <div>⏰ <strong>Same Day</strong> Delivery Available</div>
+        <div>⭐ <strong>4.9/5</strong> Customer Rating</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FEATURED PRODUCTS ═══════════════════════════════════ -->
+  <section id="featured" aria-labelledby="featured-heading">
+    <div class="container">
+      <div class="text-center" style="margin-bottom:2.5rem;">
+        <h2 class="section-title" id="featured-heading">Our Bestsellers</h2>
+        <p class="section-subtitle">
+          Handpicked favourites — loaded fresh from our kitchen every morning.
+        </p>
+      </div>
+
+      <!--
+        LEARNING NOTE:
+        This grid is populated by main.js which calls getProducts() from api.js.
+        The products come from the Flask backend (not hardcoded here).
+      -->
+      <div class="products-grid" id="featured-products" aria-label="Featured products">
+        <!-- Products are dynamically loaded here by main.js -->
+      </div>
+
+      <div class="text-center mt-4">
+        <a href="products.html" class="btn btn-primary" id="view-all-btn">View All Products →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ ABOUT STRIP ══════════════════════════════════════════ -->
+  <section style="background:var(--cream-dark);" aria-label="About section">
+    <div class="container">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center;">
+        <div>
+          <h2 class="section-title">Baked With Love Since 2010</h2>
+          <p style="color:var(--text-mid); line-height:1.9; margin-bottom:1rem;">
+            Sweet Crumbs Bakery started as a small home kitchen and grew into
+            a beloved neighbourhood bakery. Every item is still made by hand
+            using family recipes passed down through generations.
+          </p>
+          <p style="color:var(--text-mid); line-height:1.9;">
+            We source only the freshest local ingredients — no preservatives,
+            no artificial flavours, just honest, delicious baking.
+          </p>
+          <a href="contact.html" class="btn btn-primary mt-2" id="about-contact-btn">Get in Touch</a>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:1rem;">
+          <div style="background:var(--white); border-radius:var(--radius-md); padding:1.5rem; box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:1rem;">
+            <span style="font-size:2rem;">🎂</span>
+            <div><strong style="color:var(--brown-dark);">500+</strong> <br><span style="color:var(--text-mid); font-size:0.9rem;">Unique Recipes</span></div>
+          </div>
+          <div style="background:var(--white); border-radius:var(--radius-md); padding:1.5rem; box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:1rem;">
+            <span style="font-size:2rem;">😊</span>
+            <div><strong style="color:var(--brown-dark);">10,000+</strong> <br><span style="color:var(--text-mid); font-size:0.9rem;">Happy Customers</span></div>
+          </div>
+          <div style="background:var(--white); border-radius:var(--radius-md); padding:1.5rem; box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:1rem;">
+            <span style="font-size:2rem;">🏆</span>
+            <div><strong style="color:var(--brown-dark);">Best Bakery</strong> <br><span style="color:var(--text-mid); font-size:0.9rem;">City Award 2023</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══════════════════════════════════════════════ -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">🍰 Sweet Crumbs Bakery</div>
+          <p>Freshly Baked Happiness, Every Day.<br>Made with ❤️ and the finest ingredients.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <a href="index.html">Home</a>
+          <a href="products.html">Products</a>
+          <a href="cart.html">Cart</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h4>Account</h4>
+          <a href="login.html">Login</a>
+          <a href="register.html">Register</a>
+          <a href="admin.html">Admin</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 Sweet Crumbs Bakery · Built for learning full-stack development 🎓</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts — order matters! api.js must come before main.js -->
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+
+</body>
+</html>
