@@ -1,0 +1,43 @@
+# ── Python ─────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ── Virtual environment ─────────────────────────────────────
+venv/
+env/
+.venv/
+.env/
+
+# ── Environment variables ───────────────────────────────────
+# NEVER commit your real .env file!
+# It contains secrets like SECRET_KEY.
+.env
+
+# ── SQLite database ─────────────────────────────────────────
+# The database is auto-created when you run the backend.
+# No need to commit it.
+*.db
+*.sqlite
+*.sqlite3
+
+# ── OS / Editor ─────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ── Node (if you ever add a build step) ─────────────────────
+node_modules/
+npm-debug.log*
+
+# ── Logs ────────────────────────────────────────────────────
+*.log

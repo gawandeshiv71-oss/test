@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Sweet Crumbs Bakery</title>
+  <meta name="description" content="Login to your Sweet Crumbs Bakery account.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ══ NAVBAR ══════════════════════════════════════════════ -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container navbar-inner">
+      <a href="index.html" class="nav-logo"><span>🍰</span> Sweet Crumbs</a>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="cart.html" class="cart-link">🛒 Cart <span class="cart-count" id="cart-count">0</span></a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ══ LOGIN FORM ══════════════════════════════════════════ -->
+  <main class="auth-page" role="main">
+    <div class="auth-card">
+      <div class="logo">🍰</div>
+      <h2>Welcome Back!</h2>
+      <p class="subtitle">Login to your Sweet Crumbs account</p>
+
+      <div id="login-alert" class="alert hidden" role="alert"></div>
+
+      <!--
+        LEARNING NOTE:
+        This form calls loginUser(email, password) from auth.js.
+        auth.js sends POST /api/auth/login to Flask.
+        Flask checks the password hash and returns a token.
+        auth.js stores the token in localStorage.
+      -->
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Your password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:0.85rem;" id="login-btn">
+          Login →
+        </button>
+      </form>
+
+      <div class="auth-switch">
+        Don't have an account? <a href="register.html" id="register-link">Create one</a>
+      </div>
+
+      <div style="margin-top:1.5rem; background:var(--cream); border-radius:var(--radius-sm); padding:1rem; font-size:0.85rem; color:var(--text-mid);">
+        <strong>Demo Admin Login:</strong><br>
+        Email: admin@sweetcrumbs.com<br>
+        Password: admin123
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+
+</body>
+</html>

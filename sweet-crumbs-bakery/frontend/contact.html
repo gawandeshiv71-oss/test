@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us — Sweet Crumbs Bakery</title>
+  <meta name="description" content="Get in touch with Sweet Crumbs Bakery. We'd love to hear from you.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ══ NAVBAR ══════════════════════════════════════════════ -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container navbar-inner">
+      <a href="index.html" class="nav-logo"><span>🍰</span> Sweet Crumbs</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+        <li><a href="cart.html" class="cart-link">🛒 Cart <span class="cart-count" id="cart-count">0</span></a></li>
+        <li><a href="login.html" id="nav-login-link">Login</a><span class="nav-user" id="nav-user-display" style="display:none;"></span></li>
+        <li><button class="btn btn-outline btn-sm" id="nav-logout-btn" style="display:none;">Logout</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ══ PAGE HEADER ═════════════════════════════════════════ -->
+  <div class="page-header">
+    <div class="container">
+      <h1>Contact Us</h1>
+      <p>We'd love to hear from you. Send us a message!</p>
+    </div>
+  </div>
+
+  <!-- ══ CONTACT SECTION ═════════════════════════════════════ -->
+  <section>
+    <div class="container">
+      <div class="contact-layout">
+
+        <!-- ── Contact Info ──────────────────────────────── -->
+        <div class="contact-info">
+          <h2>Get in Touch</h2>
+          <p>
+            Have a custom cake order? A question about ingredients?
+            Or just want to say hello? We're always happy to hear from
+            our customers!
+          </p>
+
+          <div class="contact-item">
+            <div class="icon">📍</div>
+            <div>
+              <strong>Address</strong><br>
+              <span style="font-size:0.9rem;">12 Baker Street, Sweet Lane, Mumbai 400001</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="icon">📞</div>
+            <div>
+              <strong>Phone</strong><br>
+              <span style="font-size:0.9rem;">+91 98765 43210</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="icon">✉️</div>
+            <div>
+              <strong>Email</strong><br>
+              <span style="font-size:0.9rem;">hello@sweetcrumbs.com</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="icon">⏰</div>
+            <div>
+              <strong>Hours</strong><br>
+              <span style="font-size:0.9rem;">Mon–Sat: 8am–8pm · Sun: 9am–6pm</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Contact Form ──────────────────────────────── -->
+        <div class="contact-card">
+          <div id="contact-success" class="alert alert-success hidden">
+            🎉 Message sent! We'll get back to you within 24 hours.
+          </div>
+          <div id="contact-error" class="alert alert-error hidden"></div>
+
+          <!--
+            LEARNING NOTE:
+            When submitted, this form sends data to:
+            POST /api/contact
+            Flask saves the message to the contact_messages table.
+            The admin can view all messages in admin.html.
+          -->
+          <form id="contact-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="c-name">Your Name *</label>
+                <input type="text" id="c-name" placeholder="Jane Smith" required>
+              </div>
+              <div class="form-group">
+                <label for="c-email">Email Address *</label>
+                <input type="email" id="c-email" placeholder="jane@example.com" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="c-subject">Subject *</label>
+              <input type="text" id="c-subject" placeholder="Custom cake order enquiry" required>
+            </div>
+            <div class="form-group">
+              <label for="c-message">Message *</label>
+              <textarea id="c-message" placeholder="Tell us how we can help you..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;" id="contact-submit-btn">
+              Send Message ✉️
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══════════════════════════════════════════════ -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-bottom"><p>© 2024 Sweet Crumbs Bakery</p></div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+    const contactForm = document.getElementById("contact-form");
+    if (contactForm) {
+      contactForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const name    = document.getElementById("c-name").value.trim();
+        const email   = document.getElementById("c-email").value.trim();
+        const subject = document.getElementById("c-subject").value.trim();
+        const message = document.getElementById("c-message").value.trim();
+        const successEl = document.getElementById("contact-success");
+        const errorEl   = document.getElementById("contact-error");
+        const submitBtn = contactForm.querySelector("button[type=submit]");
+
+        successEl.className = "alert alert-success hidden";
+        errorEl.className   = "alert alert-error hidden";
+
+        if (!name || !email || !subject || !message) {
+          errorEl.textContent = "Please fill in all fields.";
+          errorEl.className   = "alert alert-error";
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Sending...";
+
+        try {
+          // Send message to Flask backend → saved to database
+          await submitContact(name, email, subject, message);
+          successEl.className = "alert alert-success";
+          contactForm.reset();
+        } catch (err) {
+          errorEl.textContent = err.message;
+          errorEl.className   = "alert alert-error";
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Send Message ✉️";
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

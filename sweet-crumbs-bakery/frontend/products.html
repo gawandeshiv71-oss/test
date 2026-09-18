@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products — Sweet Crumbs Bakery</title>
+  <meta name="description" content="Browse our full range of cakes, pastries, cupcakes, cookies and breads at Sweet Crumbs Bakery.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ══ NAVBAR ══════════════════════════════════════════════ -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container navbar-inner">
+      <a href="index.html" class="nav-logo"><span>🍰</span> Sweet Crumbs</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html?category=Cakes">Cakes</a></li>
+        <li><a href="products.html" class="active">Products</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="cart.html" class="cart-link">🛒 Cart <span class="cart-count" id="cart-count">0</span></a></li>
+        <li><a href="login.html" id="nav-login-link">Login</a><span class="nav-user" id="nav-user-display" style="display:none;"></span></li>
+        <li><button class="btn btn-outline btn-sm" id="nav-logout-btn" style="display:none;">Logout</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ══ PAGE HEADER ═════════════════════════════════════════ -->
+  <div class="page-header">
+    <div class="container">
+      <h1>Our Products</h1>
+      <p>Everything baked fresh. Filter by category or search below.</p>
+    </div>
+  </div>
+
+  <!-- ══ PRODUCTS SECTION ════════════════════════════════════ -->
+  <section>
+    <div class="container">
+
+      <!-- ── Filters + Search ─────────────────────────────── -->
+      <!--
+        LEARNING NOTE:
+        Clicking a filter button calls loadProducts() in products.js.
+        products.js then calls getProducts({category}) from api.js,
+        which appends ?category=Cakes to the URL and fetches from Flask.
+      -->
+      <div class="filters-bar" role="group" aria-label="Filter by category">
+        <button class="filter-btn active" data-category="All" id="filter-all">All</button>
+        <button class="filter-btn" data-category="Cakes" id="filter-cakes">🎂 Cakes</button>
+        <button class="filter-btn" data-category="Pastries" id="filter-pastries">🥐 Pastries</button>
+        <button class="filter-btn" data-category="Cupcakes" id="filter-cupcakes">🧁 Cupcakes</button>
+        <button class="filter-btn" data-category="Cookies" id="filter-cookies">🍪 Cookies</button>
+        <button class="filter-btn" data-category="Breads" id="filter-breads">🍞 Breads</button>
+
+        <div class="search-box" role="search">
+          <span aria-hidden="true">🔍</span>
+          <label for="search-input" class="hidden">Search products</label>
+          <input
+            type="search"
+            id="search-input"
+            placeholder="Search products..."
+            aria-label="Search products"
+            autocomplete="off"
+          >
+        </div>
+      </div>
+
+      <!-- ── Products Grid ─────────────────────────────────── -->
+      <div class="products-grid" id="products-grid" aria-label="Product listing">
+        <!-- Populated dynamically by products.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══════════════════════════════════════════════ -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><div class="logo">🍰 Sweet Crumbs Bakery</div><p>Freshly Baked Happiness, Every Day.</p></div>
+        <div class="footer-col"><h4>Quick Links</h4><a href="index.html">Home</a><a href="products.html">Products</a><a href="cart.html">Cart</a><a href="contact.html">Contact</a></div>
+        <div class="footer-col"><h4>Account</h4><a href="login.html">Login</a><a href="register.html">Register</a><a href="admin.html">Admin</a></div>
+      </div>
+      <div class="footer-bottom"><p>© 2024 Sweet Crumbs Bakery</p></div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+    // Pre-select category from URL query param (?category=Cakes)
+    document.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+      const cat    = params.get("category");
+      if (cat) {
+        const btn = document.querySelector(`.filter-btn[data-category="${cat}"]`);
+        if (btn) {
+          document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          currentCategory = cat; // update products.js state
+          loadProducts();
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

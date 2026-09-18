@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart — Sweet Crumbs Bakery</title>
+  <meta name="description" content="Your shopping cart at Sweet Crumbs Bakery. Review items and proceed to checkout.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ══ NAVBAR ══════════════════════════════════════════════ -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container navbar-inner">
+      <a href="index.html" class="nav-logo"><span>🍰</span> Sweet Crumbs</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="cart.html" class="cart-link active">🛒 Cart <span class="cart-count" id="cart-count">0</span></a></li>
+        <li><a href="login.html" id="nav-login-link">Login</a><span class="nav-user" id="nav-user-display" style="display:none;"></span></li>
+        <li><button class="btn btn-outline btn-sm" id="nav-logout-btn" style="display:none;">Logout</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ══ PAGE HEADER ═════════════════════════════════════════ -->
+  <div class="page-header">
+    <div class="container">
+      <h1>🛒 Your Cart</h1>
+      <p>Review your items and proceed to checkout.</p>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- ── Order Success Screen (hidden initially) ─────────── -->
+    <div id="order-success" class="order-success" style="display:none;">
+      <div class="icon">🎉</div>
+      <h2>Order Placed Successfully!</h2>
+      <p>Thank you for your order. We'll start baking right away!</p>
+      <div class="order-id-box" id="order-id-display">Order #—</div>
+      <p style="color:var(--text-light); font-size:0.9rem; margin-bottom:1.5rem;">
+        You'll receive a confirmation soon. Your goodies are on the way!
+      </p>
+      <a href="products.html" class="btn btn-primary" id="continue-shopping-btn">Continue Shopping 🛍️</a>
+    </div>
+
+    <!-- ── Main Cart Section ─────────────────────────────── -->
+    <div id="cart-main-section">
+
+      <!-- Empty cart state -->
+      <div id="empty-cart" class="empty-state" style="display:none; padding:5rem 1rem;">
+        <div class="emoji">🛒</div>
+        <h3 style="color:var(--brown-dark); margin-bottom:0.5rem;">Your cart is empty</h3>
+        <p>Looks like you haven't added anything yet!</p>
+        <a href="products.html" class="btn btn-primary mt-2" id="shop-now-btn">Shop Now</a>
+      </div>
+
+      <!-- Cart + Summary layout -->
+      <div class="cart-layout" id="cart-summary-section">
+
+        <!-- ── Left: Cart Items ─────────────────────────── -->
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <h2 style="font-size:1.3rem; color:var(--brown-dark);">Items in Cart</h2>
+            <button class="btn btn-outline btn-sm" id="clear-cart-btn">Clear Cart</button>
+          </div>
+
+          <!--
+            LEARNING NOTE:
+            Cart items are stored in localStorage (no backend required).
+            cart.js reads localStorage and builds this list dynamically.
+          -->
+          <div class="cart-items-list" id="cart-items-list" aria-label="Cart items">
+            <!-- Rendered by cart.js -->
+          </div>
+        </div>
+
+        <!-- ── Right: Order Summary ─────────────────────── -->
+        <div>
+          <div class="cart-summary" aria-label="Order summary">
+            <h3>Order Summary</h3>
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span id="summary-subtotal">₹0</span>
+            </div>
+            <div class="summary-row">
+              <span>Delivery</span>
+              <span id="summary-delivery">₹50</span>
+            </div>
+            <div class="summary-row total">
+              <span>Total</span>
+              <span id="summary-total">₹0</span>
+            </div>
+          </div>
+
+          <!-- ── Checkout Form ──────────────────────────── -->
+          <div class="checkout-form" id="checkout-section">
+            <h3>Delivery Details</h3>
+            <p style="font-size:0.88rem; color:var(--text-light); margin-bottom:1.2rem;">
+              Fill in your details below to place the order.
+            </p>
+
+            <div id="checkout-alert" class="alert hidden"></div>
+
+            <!--
+              When submitted, cart.js sends this data to:
+              POST /api/orders
+              Flask saves the order to the database.
+            -->
+            <form id="checkout-form" novalidate>
+              <div class="form-group">
+                <label for="co-name">Full Name *</label>
+                <input type="text" id="co-name" placeholder="John Doe" required>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="co-email">Email *</label>
+                  <input type="email" id="co-email" placeholder="john@example.com" required>
+                </div>
+                <div class="form-group">
+                  <label for="co-phone">Phone *</label>
+                  <input type="tel" id="co-phone" placeholder="9876543210" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="co-address">Delivery Address *</label>
+                <textarea id="co-address" placeholder="House No., Street, City, PIN" rows="3" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-rose" style="width:100%; justify-content:center; padding:0.9rem;" id="place-order-btn">
+                Place Order 🎉
+              </button>
+              <p style="text-align:center; font-size:0.8rem; color:var(--text-light); margin-top:0.8rem;">
+                🔒 No payment required — this is a demo project.
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ FOOTER ══════════════════════════════════════════════ -->
+  <footer class="footer" role="contentinfo" style="margin-top:3rem;">
+    <div class="container">
+      <div class="footer-bottom"><p>© 2024 Sweet Crumbs Bakery</p></div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/auth.js"></script>
+
+</body>
+</html>
