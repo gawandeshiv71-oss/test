@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SugarDream Sweet Shop – Handcrafted sweets, chocolates, and confections made with love. Order online or visit us today!" />
+  <title>SugarDream Sweet Shop – Handcrafted Confections</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== CANDY RAIN CANVAS ===== -->
+  <canvas id="candyCanvas"></canvas>
+
+  <!-- ===== LOADER ===== -->
+  <div id="loader">
+    <div class="loader-inner">
+      <div class="loader-candy">🍬</div>
+      <div class="loader-text">SugarDream</div>
+      <div class="loader-bar"><span></span></div>
+    </div>
+  </div>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav id="navbar">
+    <div class="nav-container">
+      <a href="#home" class="nav-logo" id="nav-logo-link">
+        <span class="logo-icon">🍭</span>
+        <span class="logo-text">SugarDream</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#sweets" class="nav-link">Sweets</a></li>
+        <li><a href="#specials" class="nav-link">Specials</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#testimonials" class="nav-link">Reviews</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+      <a href="#order" class="nav-cta" id="navOrderBtn">Order Now</a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section id="home" class="hero">
+    <div class="hero-bg-gradient"></div>
+    <div class="hero-content">
+      <div class="hero-badge reveal-up">✨ Handcrafted with Love Since 1985</div>
+      <h1 class="hero-title reveal-up">
+        Life is
+        <span class="highlight-word" id="cycleWord">Sweet</span>
+        <br />at SugarDream
+      </h1>
+      <p class="hero-subtitle reveal-up">
+        Discover hundreds of handcrafted chocolates, traditional Indian mithai,
+        artisan candies & gift hampers made fresh every day.
+      </p>
+      <div class="hero-actions reveal-up">
+        <a href="#sweets" class="btn btn-primary" id="heroExploreBtn">
+          <span>Explore Sweets</span>
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#about" class="btn btn-ghost" id="heroStoryBtn">Our Story</a>
+      </div>
+      <div class="hero-stats reveal-up">
+        <div class="stat">
+          <span class="stat-num" data-target="250">0</span><span>+</span>
+          <span class="stat-label">Varieties</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num" data-target="40">0</span><span>+</span>
+          <span class="stat-label">Years</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num" data-target="50000">0</span><span>+</span>
+          <span class="stat-label">Happy Customers</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-image-area">
+      <div class="hero-plate reveal-right">
+        <div class="plate-glow"></div>
+        <div class="floating-sweets">
+          <div class="fs fs1">🍫</div>
+          <div class="fs fs2">🍬</div>
+          <div class="fs fs3">🍭</div>
+          <div class="fs fs4">🧁</div>
+          <div class="fs fs5">🍮</div>
+          <div class="fs fs6">🍩</div>
+          <div class="fs fs7">🍪</div>
+          <div class="fs fs8">🎂</div>
+        </div>
+        <div class="plate-disc">
+          <span class="plate-main-emoji">🍬</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <div class="scroll-mouse"><span></span></div>
+      <p>Scroll Down</p>
+    </div>
+  </section>
+
+  <!-- ===== MARQUEE BANNER ===== -->
+  <div class="marquee-banner">
+    <div class="marquee-track">
+      <span>🍫 Belgian Chocolates</span>
+      <span>🍬 Classic Candies</span>
+      <span>🍭 Lollipops</span>
+      <span>🧁 Cupcakes</span>
+      <span>🍮 Gulab Jamun</span>
+      <span>🍩 Donuts</span>
+      <span>🍪 Cookies</span>
+      <span>🎂 Custom Cakes</span>
+      <span>🪄 Magic Barfi</span>
+      <span>🌟 Kaju Katli</span>
+      <span>🍫 Belgian Chocolates</span>
+      <span>🍬 Classic Candies</span>
+      <span>🍭 Lollipops</span>
+      <span>🧁 Cupcakes</span>
+      <span>🍮 Gulab Jamun</span>
+      <span>🍩 Donuts</span>
+      <span>🍪 Cookies</span>
+      <span>🎂 Custom Cakes</span>
+      <span>🪄 Magic Barfi</span>
+      <span>🌟 Kaju Katli</span>
+    </div>
+  </div>
+
+  <!-- ===== SWEETS SECTION ===== -->
+  <section id="sweets" class="sweets-section">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <div class="section-tag">Our Collection</div>
+        <h2 class="section-title">Sweet Delights for Every Occasion</h2>
+        <p class="section-sub">From traditional mithai to contemporary confections – every bite tells a story.</p>
+      </div>
+
+      <div class="filter-tabs reveal-up" id="filterTabs">
+        <button class="filter-btn active" data-filter="all" id="filterAll">All</button>
+        <button class="filter-btn" data-filter="chocolate" id="filterChoc">Chocolate</button>
+        <button class="filter-btn" data-filter="mithai" id="filterMithai">Mithai</button>
+        <button class="filter-btn" data-filter="candy" id="filterCandy">Candy</button>
+        <button class="filter-btn" data-filter="cake" id="filterCake">Cakes</button>
+      </div>
+
+      <div class="sweets-grid" id="sweetsGrid">
+
+        <div class="sweet-card reveal-card" data-category="chocolate" id="card-choc1">
+          <div class="card-badge">Best Seller</div>
+          <div class="card-emoji">🍫</div>
+          <div class="card-info">
+            <h3>Dark Truffle Box</h3>
+            <p>Rich 70% cocoa truffles with ganache filling</p>
+            <div class="card-footer">
+              <span class="card-price">₹ 499</span>
+              <button class="card-add" aria-label="Add to cart">+</button>
+            </div>
+          </div>
+          <div class="card-shine"></div>
+        </div>
+
+        <div class="sweet-card reveal-card" data-category="mithai" id="card-mit1">
+          <div class="card-badge new">New</div>
+          <div class="card-emoji">🟡</div>
+          <div class="card-info">
+            <h3>Kaju Katli</h3>
+            <p>Pure cashew fudge with silver varq garnish</p>
+            <div class="card-footer">
+              <span class="card-price">₹ 650</span>
+              <button class="card-add" aria-label="Add to cart">+</button>
+            </div>
+          </div>
+          <div class="card-shine"></div>
+        </div>
+
+        <div class="sweet-card reveal-card" data-category="candy" id="card-can1">
+          <div class="card-emoji">🍬</div>
+          <div class="card-info">
+            <h3>Rainbow Candy Mix</h3>
+            <p>Assorted fruit flavoured hard candies</p>
+            <div class="card-footer">
+              <span class="card-price">₹ 199</span>
+              <button class="card-add" aria-label="Add to cart">+</button>
+            </div>
+          </div>
+          <div class="card-shine"></div>
+        </div>
+
+        <div class="sweet-card reveal-card" data-category="cake" id="card-cak1">
+          <div class="card-badge hot">Hot</div>
+          <div class="card-emoji">🎂</div>
+          <div class="card-info">
+            <h3>Red Velvet Dream</h3>
+            <p>Cream cheese frosted red velvet with rose petals</p>
+            <div class="card-footer">
+              <span class="card-price">₹ 1,299</span>
+              <button class="card-add" aria-label="Add to cart">+</button>
+            </div>
+          </div>
+          <div class="card-shine"></div>
+        </div>
+
+        <div class="sweet-card reveal-card" data-category="chocolate" id="card-choc2">
+          <div class="card-emoji">🍩</div>
+          <div class="card-info">
+            <h3>Belgian Bonbons</h3>
+            <p>Milk chocolate shells with caramel centres</p>
+            <div class="card-footer">
+              <span class="card-price">₹ 349</span>
+              <button class="card-add" aria-label="Add to cart">+</button>
+            </div>
+          </div>
+          <div class="card-shine"></div>
+        </div>
+
+        <div class="sweet-card reveal-card" data-category="mithai" id="card-mit2">
+          <div class="card-emoji">🍮</div>
+          <div class="card-info">
+            <h3>Gulab Jamun</h3>
+            <p>Soft khoya dumplings soaked in rose syrup</p>
+            <div class="card-footer">
+              <span class="card-price">₹ 299</span>
+              <button class="card-add" aria-label="Add to cart">+</button>
+            </div>
+          </div>
+          <div class="card-shine"></div>
+        </div>
+
+        <div class="sweet-card reveal-card" data-category="candy" id="card-can2">
+          <div class="card-emoji">🍭</div>
+          <div class="card-info">
+            <h3>Swirl Lollipops</h3>
+            <p>Handcrafted rainbow swirl sugar pops</p>
+            <div class="card-footer">
+              <span class="card-price">₹ 99</span>
+              <button class="card-add" aria-label="Add to cart">+</button>
+            </div>
+          </div>
+          <div class="card-shine"></div>
+        </div>
+
+        <div class="sweet-card reveal-card" data-category="cake" id="card-cak2">
+          <div class="card-emoji">🧁</div>
+          <div class="card-info">
+            <h3>Unicorn Cupcakes</h3>
+            <p>Vanilla sponge with rainbow buttercream swirls</p>
+            <div class="card-footer">
+              <span class="card-price">₹ 79</span>
+              <button class="card-add" aria-label="Add to cart">+</button>
+            </div>
+          </div>
+          <div class="card-shine"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SPECIALS SECTION ===== -->
+  <section id="specials" class="specials-section">
+    <div class="specials-bg-shape shape1"></div>
+    <div class="specials-bg-shape shape2"></div>
+    <div class="container">
+      <div class="section-header reveal-up">
+        <div class="section-tag" style="color:#fff; border-color:rgba(255,255,255,0.5);">Today's Specials</div>
+        <h2 class="section-title" style="color:#fff;">Seasonal & Festival Specials</h2>
+        <p class="section-sub" style="color:rgba(255,255,255,0.75);">Limited time creations made for life's most special moments.</p>
+      </div>
+      <div class="specials-grid">
+
+        <div class="special-card reveal-card" id="special-diwali">
+          <div class="special-tag">Diwali Special</div>
+          <div class="special-emoji">🪔</div>
+          <h3>Festival Box</h3>
+          <p>Premium hamper of 12 assorted mithai & chocolates beautifully packaged for gifting.</p>
+          <div class="special-price">₹ 1,499</div>
+          <a href="#order" class="btn btn-white" id="specialBtn1">Order Gift Box</a>
+        </div>
+
+        <div class="special-card special-featured reveal-card" id="special-choc">
+          <div class="special-tag featured-tag">⭐ Most Loved</div>
+          <div class="special-emoji">🍫</div>
+          <h3>Chocolate Fantasy</h3>
+          <p>A curated box of 24 artisan chocolates from around the world – dark, milk & white.</p>
+          <div class="special-price">₹ 2,199</div>
+          <a href="#order" class="btn btn-primary" id="specialBtn2">Order Now</a>
+        </div>
+
+        <div class="special-card reveal-card" id="special-wedding">
+          <div class="special-tag">Wedding Edition</div>
+          <div class="special-emoji">💍</div>
+          <h3>Bridal Sweet Box</h3>
+          <p>Elegantly crafted sweets in pink & gold packaging perfect for wedding favours.</p>
+          <div class="special-price">₹ 899</div>
+          <a href="#order" class="btn btn-white" id="specialBtn3">Order Gift Box</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT SECTION ===== -->
+  <section id="about" class="about-section">
+    <div class="container about-container">
+      <div class="about-visual reveal-left">
+        <div class="about-img-frame">
+          <div class="about-blob"></div>
+          <div class="about-emoji-collage">
+            <span class="ae ae1">🍫</span>
+            <span class="ae ae2">🍬</span>
+            <span class="ae ae3">🍭</span>
+            <span class="ae ae4">🧁</span>
+            <span class="ae ae5">🍩</span>
+            <span class="ae ae6">🎂</span>
+            <div class="about-center-icon">🏪</div>
+          </div>
+        </div>
+        <div class="about-float-card fc1">
+          <span>🏆</span>
+          <div><strong>Award Winning</strong><br><small>Best Sweet Shop 2024</small></div>
+        </div>
+        <div class="about-float-card fc2">
+          <span>🌿</span>
+          <div><strong>100% Natural</strong><br><small>No artificial colours</small></div>
+        </div>
+      </div>
+      <div class="about-content reveal-right">
+        <div class="section-tag">Our Story</div>
+        <h2 class="section-title">Sweetening Lives<br/>Since 1985</h2>
+        <p>SugarDream began in a small kitchen in Jaipur, where our founder Priya Sharma spent hours perfecting her grandmother's secret mithai recipes. What started as gifts for neighbours soon became the most beloved sweet shop in town.</p>
+        <p>Today, we blend age-old Indian traditions with contemporary confectionery techniques to create sweets that are not just delicious — they're unforgettable experiences.</p>
+        <div class="about-features">
+          <div class="af-item">
+            <div class="af-icon">🌿</div>
+            <div>
+              <strong>All Natural Ingredients</strong>
+              <p>No preservatives, no artificial flavours — just pure goodness.</p>
+            </div>
+          </div>
+          <div class="af-item">
+            <div class="af-icon">🤲</div>
+            <div>
+              <strong>Handcrafted Daily</strong>
+              <p>Every sweet is made fresh every morning by our skilled artisans.</p>
+            </div>
+          </div>
+          <div class="af-item">
+            <div class="af-icon">🎁</div>
+            <div>
+              <strong>Custom Gifting</strong>
+              <p>Bespoke hampers created for weddings, festivals & corporates.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TESTIMONIALS ===== -->
+  <section id="testimonials" class="testimonials-section">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <div class="section-tag">Happy Customers</div>
+        <h2 class="section-title">What Our Lovers Say</h2>
+      </div>
+      <div class="testimonials-track" id="testimonialsTrack">
+
+        <div class="testimonial-card" id="tcard1">
+          <div class="tc-stars">★★★★★</div>
+          <p>"The Kaju Katli from SugarDream is simply divine. It melts in your mouth and the packaging is gorgeous. My family orders every Diwali!"</p>
+          <div class="tc-author">
+            <div class="tc-avatar">A</div>
+            <div><strong>Anjali Mehta</strong><small>Mumbai</small></div>
+          </div>
+        </div>
+
+        <div class="testimonial-card" id="tcard2">
+          <div class="tc-stars">★★★★★</div>
+          <p>"I ordered the chocolate fantasy box for my anniversary and my wife was blown away. Best chocolates I've ever tasted — worth every rupee!"</p>
+          <div class="tc-author">
+            <div class="tc-avatar">R</div>
+            <div><strong>Rajan Patel</strong><small>Bangalore</small></div>
+          </div>
+        </div>
+
+        <div class="testimonial-card" id="tcard3">
+          <div class="tc-stars">★★★★★</div>
+          <p>"We used SugarDream for our wedding favours — 500 guests and everyone was asking where to buy them. Absolutely stunning and delicious!"</p>
+          <div class="tc-author">
+            <div class="tc-avatar">S</div>
+            <div><strong>Shreya & Vikram</strong><small>Delhi</small></div>
+          </div>
+        </div>
+
+        <div class="testimonial-card" id="tcard4">
+          <div class="tc-stars">★★★★★</div>
+          <p>"The gulab jamun here is the closest I've come to my grandmother's recipe. Took me back to childhood — truly nostalgic and wonderful."</p>
+          <div class="tc-author">
+            <div class="tc-avatar">P</div>
+            <div><strong>Priya Nair</strong><small>Chennai</small></div>
+          </div>
+        </div>
+
+        <div class="testimonial-card" id="tcard5">
+          <div class="tc-stars">★★★★★</div>
+          <p>"Ordered unicorn cupcakes for my daughter's birthday. The look, the taste — she and all her friends were in absolute awe. Thank you SugarDream!"</p>
+          <div class="tc-author">
+            <div class="tc-avatar">M</div>
+            <div><strong>Megha Sharma</strong><small>Jaipur</small></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="testimonial-dots" id="testimonialDots"></div>
+    </div>
+  </section>
+
+  <!-- ===== ORDER / CONTACT ===== -->
+  <section id="contact" class="contact-section">
+    <div class="container contact-container">
+      <div class="contact-info reveal-left">
+        <div class="section-tag">Get in Touch</div>
+        <h2 class="section-title">Order or Visit Us</h2>
+        <p>We'd love to sweeten your day! Reach out with bulk orders, custom gifting, or just to say hello.</p>
+        <div class="contact-details">
+          <div class="cd-item">
+            <span class="cd-icon">📍</span>
+            <div><strong>Our Sweet Shop</strong><p>12, Sugar Lane, Pink City Market, Jaipur – 302001</p></div>
+          </div>
+          <div class="cd-item">
+            <span class="cd-icon">📞</span>
+            <div><strong>Call Us</strong><p>+91 98765 43210</p></div>
+          </div>
+          <div class="cd-item">
+            <span class="cd-icon">🕘</span>
+            <div><strong>Opening Hours</strong><p>Mon – Sun: 9:00 AM – 9:00 PM</p></div>
+          </div>
+          <div class="cd-item">
+            <span class="cd-icon">✉️</span>
+            <div><strong>Email</strong><p>hello@sugardream.in</p></div>
+          </div>
+        </div>
+      </div>
+      <div id="order" class="contact-form-wrap reveal-right">
+        <form class="contact-form" id="orderForm">
+          <h3>Place an Order</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="formName">Your Name</label>
+              <input type="text" id="formName" placeholder="Priya Sharma" required />
+            </div>
+            <div class="form-group">
+              <label for="formPhone">Phone Number</label>
+              <input type="tel" id="formPhone" placeholder="+91 98765 43210" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="formItem">What Would You Like?</label>
+            <select id="formItem">
+              <option value="">Select a sweet…</option>
+              <option>Dark Truffle Box</option>
+              <option>Kaju Katli</option>
+              <option>Rainbow Candy Mix</option>
+              <option>Red Velvet Dream</option>
+              <option>Festival Box</option>
+              <option>Chocolate Fantasy</option>
+              <option>Custom Order</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="formMsg">Special Instructions</label>
+            <textarea id="formMsg" rows="3" placeholder="Tell us about custom orders, delivery dates, dietary needs…"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary full-width" id="orderSubmitBtn">
+            <span>Send Sweet Order 🍬</span>
+          </button>
+          <div class="form-success" id="formSuccess">
+            🎉 Thank you! We'll reach out within a few hours to confirm your order.
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-bg-anim"></div>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">🍭 SugarDream</div>
+        <p>Handcrafted confections made with pure ingredients and even purer love — bringing sweetness to every occasion since 1985.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-btn" id="socialInsta" aria-label="Instagram">📸</a>
+          <a href="#" class="social-btn" id="socialFb" aria-label="Facebook">👥</a>
+          <a href="#" class="social-btn" id="socialYt" aria-label="YouTube">▶️</a>
+          <a href="#" class="social-btn" id="socialWa" aria-label="WhatsApp">💬</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#sweets">Our Sweets</a></li>
+          <li><a href="#specials">Specials</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Popular Sweets</h4>
+        <ul>
+          <li><a href="#sweets">Dark Truffle Box</a></li>
+          <li><a href="#sweets">Kaju Katli</a></li>
+          <li><a href="#sweets">Red Velvet Dream</a></li>
+          <li><a href="#sweets">Gulab Jamun</a></li>
+          <li><a href="#sweets">Unicorn Cupcakes</a></li>
+        </ul>
+      </div>
+      <div class="footer-newsletter">
+        <h4>Sweet Deals in Your Inbox</h4>
+        <p>Subscribe to get exclusive offers and seasonal sweet alerts.</p>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="email" id="newsletterEmail" placeholder="your@email.com" />
+          <button type="submit" id="newsletterBtn">🍬</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 SugarDream Sweet Shop. All rights reserved. Made with 💕 and sugar.</p>
+    </div>
+  </footer>
+
+  <!-- Cart Toast -->
+  <div class="cart-toast" id="cartToast">
+    <span class="ct-icon">🛒</span>
+    <span class="ct-msg" id="cartToastMsg">Added to cart!</span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

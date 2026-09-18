@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OMR Checker — History</title>
+  <meta name="description" content="View and manage all past OMR grading results"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="config.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #0f0f1a; }
+    .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.1); }
+    .btn-glow { background: linear-gradient(135deg,#6366f1,#8b5cf6); box-shadow: 0 0 20px rgba(99,102,241,0.4); transition: all 0.3s; }
+    .btn-glow:hover { box-shadow: 0 0 35px rgba(99,102,241,0.8); transform: translateY(-2px); }
+    .history-row { transition: all 0.2s; cursor: pointer; }
+    .history-row:hover { background: rgba(99,102,241,0.08) !important; transform: translateX(4px); }
+    .pulse-dot { width:10px; height:10px; background:#10b981; border-radius:50%; animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(1.4)} }
+    .row-in { animation: fadeIn 0.3s ease both; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+    ::-webkit-scrollbar{width:6px} ::-webkit-scrollbar-track{background:#1e1b4b} ::-webkit-scrollbar-thumb{background:#6366f1;border-radius:3px}
+  </style>
+</head>
+<body class="min-h-screen text-white">
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-lg font-bold">⊙</div>
+        <span class="text-xl font-bold bg-gradient-to-r from-indigo-300 to-purple-300 bg-clip-text text-transparent">OMR Checker</span>
+      </div>
+      <div class="flex items-center gap-4 text-sm font-medium">
+        <a href="index.html" class="text-white/60 hover:text-white transition-colors">Dashboard</a>
+        <a href="upload.html" class="text-white/60 hover:text-white transition-colors">Upload</a>
+        <a href="history.html" class="text-indigo-300">History</a>
+        <div class="flex items-center gap-2 text-white/50 text-xs">
+          <div class="pulse-dot" id="serverDot"></div>
+          <span id="serverStatus">Connecting…</span>
+        </div>
+        <button onclick="openSettings()" title="API Settings"
+                class="p-1.5 rounded-lg text-white/30 hover:text-white/70 hover:bg-white/5 transition-all">⚙</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto px-6 pt-28 pb-20">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+      <div>
+        <h1 class="text-3xl font-bold">Result History</h1>
+        <p class="text-white/40 mt-1">All past OMR scans — click a row to view details</p>
+      </div>
+      <div class="flex gap-3">
+        <a href="upload.html" class="btn-glow px-5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2">
+          📤 New Scan
+        </a>
+        <button onclick="clearAll()"
+                class="glass px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-red-600/20 text-red-400 transition-all">
+          🗑 Clear All
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="glass rounded-2xl p-5 text-center">
+        <div class="text-3xl font-extrabold text-indigo-400" id="hTotal">—</div>
+        <div class="text-white/40 text-xs mt-1">Total Scans</div>
+      </div>
+      <div class="glass rounded-2xl p-5 text-center">
+        <div class="text-3xl font-extrabold text-emerald-400" id="hAvg">—</div>
+        <div class="text-white/40 text-xs mt-1">Avg Score %</div>
+      </div>
+      <div class="glass rounded-2xl p-5 text-center">
+        <div class="text-3xl font-extrabold text-yellow-400" id="hHigh">—</div>
+        <div class="text-white/40 text-xs mt-1">Highest %</div>
+      </div>
+      <div class="glass rounded-2xl p-5 text-center">
+        <div class="text-3xl font-extrabold text-red-400" id="hLow">—</div>
+        <div class="text-white/40 text-xs mt-1">Lowest %</div>
+      </div>
+    </div>
+
+    <!-- Trend chart -->
+    <div class="glass rounded-2xl p-6 mb-8">
+      <h3 class="font-semibold text-white/60 mb-4 text-sm uppercase tracking-wider">Score Trend</h3>
+      <div class="h-40">
+        <canvas id="trendChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Search + filter -->
+    <div class="flex gap-3 mb-4">
+      <input type="text" id="searchInput" placeholder="Search by student name…" oninput="filterRows()"
+             class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/30 outline-none focus:border-indigo-500 transition-colors"/>
+      <select id="gradeFilter" onchange="filterRows()"
+              class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-indigo-500 transition-colors appearance-none">
+        <option value="all">All Grades</option>
+        <option value="pass">Pass (≥50%)</option>
+        <option value="fail">Fail (&lt;50%)</option>
+      </select>
+    </div>
+
+    <!-- Table -->
+    <div class="glass rounded-2xl overflow-hidden">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-white/10 text-white/30 text-xs uppercase tracking-wider">
+            <th class="px-6 py-4 text-left">ID</th>
+            <th class="px-6 py-4 text-left">Student</th>
+            <th class="px-6 py-4 text-left">Score</th>
+            <th class="px-6 py-4 text-left">Percentage</th>
+            <th class="px-6 py-4 text-left">Date & Time</th>
+            <th class="px-6 py-4 text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="historyTable">
+          <tr><td colspan="6" class="px-6 py-16 text-center text-white/20">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p id="noResults" class="hidden text-center text-white/30 mt-8">No results match your search.</p>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center px-4">
+    <div class="glass rounded-2xl p-8 w-full max-w-md">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-lg font-bold">⚙ API Settings</h2>
+        <button onclick="closeSettings()" class="text-white/40 hover:text-white text-xl">×</button>
+      </div>
+      <p class="text-white/50 text-sm mb-4">Set the URL of your backend server. Use <code class="text-indigo-300">http://localhost:5000/api</code> when running locally.</p>
+      <label class="block mb-2 text-xs text-white/40 uppercase tracking-wider">Backend API URL</label>
+      <input id="apiUrlInput" type="url" placeholder="http://localhost:5000/api"
+             class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 outline-none focus:border-indigo-500 transition-colors mb-4"/>
+      <div class="flex gap-3">
+        <button onclick="saveSettings()" class="flex-1 py-2.5 rounded-xl text-sm font-semibold" style="background:linear-gradient(135deg,#6366f1,#8b5cf6)">✓ Save & Reconnect</button>
+        <button onclick="resetSettings()" class="px-4 py-2.5 rounded-xl border border-white/10 text-white/50 text-sm hover:bg-white/5 transition-all">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // API URL from config.js
+    function openSettings() {
+      document.getElementById('apiUrlInput').value = localStorage.getItem('omr_api_url') || '';
+      document.getElementById('settingsModal').classList.remove('hidden');
+    }
+    function closeSettings() { document.getElementById('settingsModal').classList.add('hidden'); }
+    function saveSettings() {
+      const val = document.getElementById('apiUrlInput').value.trim();
+      if (val) localStorage.setItem('omr_api_url', val); else localStorage.removeItem('omr_api_url');
+      closeSettings(); location.reload();
+    }
+    function resetSettings() {
+      localStorage.removeItem('omr_api_url');
+      document.getElementById('apiUrlInput').value = '';
+    }
+    document.getElementById('settingsModal').addEventListener('click', e => {
+      if (e.target === document.getElementById('settingsModal')) closeSettings();
+    });
+
+    let allData = [];
+
+
+    async function checkServer() {
+      try {
+        const r = await fetch(`${API}/health`, { signal: AbortSignal.timeout(3000) });
+        if (r.ok) {
+          document.getElementById('serverStatus').textContent = 'Server Online';
+          document.getElementById('serverDot').style.background = '#10b981';
+        } else throw new Error();
+      } catch {
+        document.getElementById('serverStatus').textContent = 'Server Offline';
+        document.getElementById('serverDot').style.background = '#ef4444';
+      }
+    }
+
+    async function loadHistory() {
+      try {
+        const r = await fetch(`${API}/results`);
+        allData = await r.json();
+        renderStats(allData);
+        renderChart(allData);
+        renderTable(allData);
+      } catch(e) {
+        document.getElementById('historyTable').innerHTML =
+          '<tr><td colspan="6" class="px-6 py-16 text-center text-white/20">Could not connect to server. Make sure the backend is running.</td></tr>';
+      }
+    }
+
+    function renderStats(data) {
+      document.getElementById('hTotal').textContent = data.length;
+      if (!data.length) { ['hAvg','hHigh','hLow'].forEach(id => document.getElementById(id).textContent = 'N/A'); return; }
+      const pcnts = data.map(d => d.percentage);
+      document.getElementById('hAvg').textContent  = (pcnts.reduce((s,v)=>s+v,0)/pcnts.length).toFixed(1) + '%';
+      document.getElementById('hHigh').textContent = Math.max(...pcnts) + '%';
+      document.getElementById('hLow').textContent  = Math.min(...pcnts) + '%';
+    }
+
+    function renderChart(data) {
+      const ctx   = document.getElementById('trendChart').getContext('2d');
+      const last  = data.slice().reverse().slice(-20);
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels:   last.map((_,i) => `#${last[i].id}`),
+          datasets: [{
+            label:           'Score %',
+            data:            last.map(d => d.percentage),
+            borderColor:     '#6366f1',
+            backgroundColor: 'rgba(99,102,241,0.1)',
+            pointBackgroundColor: '#8b5cf6',
+            fill: true,
+            tension: 0.4,
+            pointRadius: 4,
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.3)' } },
+            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.3)', callback: v => v + '%' }, min: 0, max: 100 },
+          }
+        }
+      });
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById('historyTable');
+      const noRes = document.getElementById('noResults');
+      if (!data.length) {
+        tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-16 text-center text-white/20">No results found. <a href="upload.html" class="text-indigo-400 hover:underline">Upload your first sheet →</a></td></tr>';
+        noRes.classList.add('hidden'); return;
+      }
+      tbody.innerHTML = data.map((r, i) => `
+        <tr class="history-row border-b border-white/5 row-in"
+            style="animation-delay:${i * 30}ms"
+            onclick="window.location='results.html?id=${r.id}'">
+          <td class="px-6 py-4 text-white/30 font-mono text-xs">#${r.id}</td>
+          <td class="px-6 py-4 font-medium">${r.student_name || '<span class="text-white/30">Anonymous</span>'}</td>
+          <td class="px-6 py-4">${r.score} / ${r.total}</td>
+          <td class="px-6 py-4">
+            <div class="flex items-center gap-2">
+              <div class="flex-1 bg-white/5 rounded-full h-1.5 max-w-[80px]">
+                <div class="h-full rounded-full ${r.percentage >= 75 ? 'bg-emerald-500' : r.percentage >= 50 ? 'bg-yellow-500' : 'bg-red-500'}"
+                     style="width: ${r.percentage}%"></div>
+              </div>
+              <span class="text-xs font-bold ${r.percentage >= 75 ? 'text-emerald-400' : r.percentage >= 50 ? 'text-yellow-400' : 'text-red-400'}">${r.percentage}%</span>
+            </div>
+          </td>
+          <td class="px-6 py-4 text-white/30 text-xs">${new Date(r.timestamp).toLocaleString()}</td>
+          <td class="px-6 py-4">
+            <div class="flex gap-2" onclick="event.stopPropagation()">
+              <a href="results.html?id=${r.id}"
+                 class="text-indigo-400 hover:text-indigo-300 text-xs font-medium px-2 py-1 rounded hover:bg-indigo-600/20 transition-colors">View</a>
+              <a href="${API}/download-pdf/${r.id}"
+                 class="text-emerald-400 hover:text-emerald-300 text-xs font-medium px-2 py-1 rounded hover:bg-emerald-600/20 transition-colors">PDF</a>
+              <button onclick="deleteRow(${r.id}, this)"
+                      class="text-red-400 hover:text-red-300 text-xs font-medium px-2 py-1 rounded hover:bg-red-600/20 transition-colors">Delete</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+      noRes.classList.add('hidden');
+    }
+
+    function filterRows() {
+      const q     = document.getElementById('searchInput').value.toLowerCase();
+      const grade = document.getElementById('gradeFilter').value;
+      const filtered = allData.filter(r => {
+        const name = (r.student_name || '').toLowerCase();
+        const matchQ = !q || name.includes(q);
+        const matchG = grade === 'all' ||
+                       (grade === 'pass' && r.percentage >= 50) ||
+                       (grade === 'fail' && r.percentage < 50);
+        return matchQ && matchG;
+      });
+      renderTable(filtered);
+      document.getElementById('noResults').classList.toggle('hidden', filtered.length > 0);
+    }
+
+    async function deleteRow(id, btn) {
+      if (!confirm(`Delete result #${id}?`)) return;
+      const tr = btn.closest('tr');
+      tr.style.opacity = '0.3';
+      try {
+        await fetch(`${API}/results/${id}`, { method: 'DELETE' });
+        allData = allData.filter(r => r.id !== id);
+        tr.remove();
+        renderStats(allData);
+      } catch(e) { alert('Delete failed'); tr.style.opacity = '1'; }
+    }
+
+    async function clearAll() {
+      if (!confirm('Delete ALL results? This cannot be undone.')) return;
+      for (const r of allData) {
+        await fetch(`${API}/results/${r.id}`, { method: 'DELETE' });
+      }
+      allData = [];
+      renderTable([]);
+      renderStats([]);
+    }
+
+    checkServer();
+    loadHistory();
+  </script>
+</body>
+</html>
