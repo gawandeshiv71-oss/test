@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register — Sweet Crumbs Bakery</title>
+  <meta name="description" content="Create a new account at Sweet Crumbs Bakery.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ══ NAVBAR ══════════════════════════════════════════════ -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container navbar-inner">
+      <a href="index.html" class="nav-logo"><span>🍰</span> Sweet Crumbs</a>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="cart.html" class="cart-link">🛒 Cart <span class="cart-count" id="cart-count">0</span></a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ══ REGISTER FORM ═══════════════════════════════════════ -->
+  <main class="auth-page" role="main">
+    <div class="auth-card">
+      <div class="logo">🎂</div>
+      <h2>Create Account</h2>
+      <p class="subtitle">Join Sweet Crumbs and start ordering!</p>
+
+      <div id="register-alert" class="alert hidden" role="alert"></div>
+
+      <!--
+        LEARNING NOTE:
+        This form calls registerUser(name, email, password) from auth.js.
+        auth.js sends POST /api/auth/register to Flask.
+        Flask hashes the password with Werkzeug and saves the user.
+        Returns a token which is stored in localStorage.
+      -->
+      <form id="register-form" novalidate>
+        <div class="form-group">
+          <label for="reg-name">Full Name</label>
+          <input type="text" id="reg-name" placeholder="Jane Doe" required autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" placeholder="jane@example.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="reg-password">Password</label>
+          <input type="password" id="reg-password" placeholder="At least 6 characters" required autocomplete="new-password">
+        </div>
+        <div class="form-group">
+          <label for="reg-confirm">Confirm Password</label>
+          <input type="password" id="reg-confirm" placeholder="Repeat your password" required autocomplete="new-password">
+        </div>
+        <button type="submit" class="btn btn-rose" style="width:100%; justify-content:center; padding:0.85rem;" id="register-btn">
+          Create Account 🎉
+        </button>
+      </form>
+
+      <div class="auth-switch">
+        Already have an account? <a href="login.html" id="login-link">Login</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+
+</body>
+</html>
